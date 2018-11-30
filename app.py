@@ -1,15 +1,15 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from tingmo import TingMo
 from dash.dependencies import Input, Output, State
+import pickle
 
 # number of seconds between re-calculating the data
 UPDATE_INTERVAL = 86400
 
 def get_new_data():
     global tm
-    tm = TingMo()
+    tm = pickle.load('lsh.pickle')
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
