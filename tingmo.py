@@ -126,7 +126,9 @@ class TingMo:
 
         for domain in domain_list:
 
-            tld_info = get_tld(domain, as_object=True)
+            print(domain)
+
+            tld_info = get_tld(domain, as_object=True, fix_protocol=True)
             just_dom = tld_info.domain
 
             bigrams = set([just_dom[i:i+2] for i in range(len(just_dom) - 1)])

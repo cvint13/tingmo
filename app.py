@@ -9,7 +9,9 @@ UPDATE_INTERVAL = 86400
 
 def get_new_data():
     global tm
-    tm = pickle.load('lsh.pickle')
+    with open('lsh.pickle','rb') as f:
+        tm_pickle = pickle.load(f)
+        tm = pickle.loads(tm_pickle)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -52,7 +54,7 @@ app.layout = html.Div([
     [State('dom_list', 'value')]
 )
 def get_matches(n_clicks,values,domain_list):
-    domain_list = ['http://'+d.strip().lower() for d in domain_list.split(',')]
+    domain_list = [d.strip().lower() for d in domain_list.split(',')]
     exclude = 'BRD' in values
     results = tm.query_LSH(domain_list,exclude)
     html_output = []
