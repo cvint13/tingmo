@@ -31,7 +31,7 @@ app.layout = html.Div([
             dcc.Textarea(value='google.com', id='dom_list',maxLength=20000,
                      style = {'width': '48%'}),
             html.Div(html.Button('Submit', id='button')),
-            html.P(id='my-div',children='Results appear here.')],
+            html.P(id='my-div',children='Training LSH... (This might take a few minutes)')],
         className='six columns',
         )])],className='row')])
 
