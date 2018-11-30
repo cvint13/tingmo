@@ -3,6 +3,18 @@ import dash_core_components as dcc
 import dash_html_components as html
 from tingmo import TingMo
 from dash.dependencies import Input, Output, State
+import time
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+
+# number of seconds between re-calculating the data
+UPDATE_INTERVAL = 3600
+
+def get_new_data_every(period=UPDATE_INTERVAL):
+    """Update the data every 'period' seconds"""
+    while True:
+        tm = TingMo()
+        print("data updated")
+        time.sleep(period)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -55,6 +67,10 @@ def get_matches(n_clicks,values,domain_list):
         for result in results[r]:
             html_output.append(html.P(children=result))
     return html_output
+
+# Run the function in another thread
+executor = ThreadPoolExecutor(max_workers=1)
+executor.submit(get_new_data_every)
 
 if __name__ == '__main__':
     app.run_server(debug=True,use_reloader=False)
