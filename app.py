@@ -7,7 +7,7 @@ import time
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
 # number of seconds between re-calculating the data
-UPDATE_INTERVAL = 3600
+UPDATE_INTERVAL = 86400
 
 def get_new_data():
     global tm
