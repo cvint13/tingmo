@@ -8,6 +8,7 @@ dash-renderer==0.15.1
 datasketch==1.2.10
 tld==0.9.1
 beautifulsoup4==4.6.3
+webapp2==2.5.2
 bs4==0.0.1
 pandas==0.23.4
 lxml==4.2.5
