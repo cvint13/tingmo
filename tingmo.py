@@ -93,7 +93,7 @@ class TingMo:
         lsh = MinHashLSH(weights=(.5, .5))
 
         # train LSH model
-        for dom in self.new_domains[:1000]:
+        for dom in self.new_domains:
 
             # remove TLD
             tld_info = get_tld('http://'+dom, as_object=True, fail_silently=True)
