@@ -5,6 +5,11 @@ dash==0.31.1
 dash-core-components==0.40.0
 dash-html-components==0.13.2
 dash-renderer==0.15.1
+datasketch==1.2.10
+tld==0.9.1
+beautifulsoup4==4.6.3
+bs4==0.0.1
+pandas==0.23.4
 decorator==4.3.0
 Flask==1.0.2
 Flask-Compress==1.4.0
