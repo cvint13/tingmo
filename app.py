@@ -9,18 +9,23 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 # number of seconds between re-calculating the data
 UPDATE_INTERVAL = 3600
 
+def get_new_data():
+    global tm
+    tm = TingMo()
+
 def get_new_data_every(period=UPDATE_INTERVAL):
     """Update the data every 'period' seconds"""
     while True:
-        tm = TingMo()
+        get_new_data()
         print("data updated")
         time.sleep(period)
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
-tm = TingMo()
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+# get initial data
+get_new_data()
 
 server = app.server
 
