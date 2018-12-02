@@ -36,7 +36,6 @@ as those are generally benign.
 ```bash
 git clone https://github.com/cvint13/tingmo.git
 pip install -r requirements.txt
-python train_lsh.py
 python app.py
 
 ``` 
