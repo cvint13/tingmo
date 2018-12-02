@@ -1,4 +1,4 @@
-from datasketch import MinHash, MinHashLSH
+from datasketch import MinHash, MinHashLSH, LeanMinHash
 from tld import get_tld
 from datetime import datetime,timedelta
 import zipfile
@@ -90,32 +90,33 @@ class TingMo:
     def _train_LSH(self):
 
         # create LSH model
-        lsh = MinHashLSH(weights=(.5, .5))
+        lsh = MinHashLSH(num_perm=128,params=(5,7))
 
         # train LSH model
-        for dom in self.new_domains:
+        for dom in self.new_domains[:100]:
 
             # remove TLD
-            tld_info = get_tld('http://'+dom, as_object=True, fail_silently=True)
-            if tld_info is None:
-                continue
+            tld_info = get_tld('http://' + dom, as_object=True, fail_silently=True)
 
-            d = tld_info.domain
+            try:
+                d = tld_info.domain
+            except:
+                continue
 
             # ignore super short new domains
-            if len(d) <= 3:
-                continue
+            if len(d) <= 3: \
+                    continue
 
             # create bigram set
-            bigrams = [d[i:i+2] for i in range(len(d) - 1)]
+            bigrams = [d[i:i + 2] for i in range(len(d) - 1)]
             bigrams = set(bigrams)
-
-            # create and update minhash obj
-            m = MinHash()
+            minhash = MinHash(num_perm=128)
             for b in bigrams:
-                m.update(b.encode('utf-8'))
+                minhash.update(b.encode('utf-8'))
 
-            lsh.insert(dom,m)
+            minhash_lean = LeanMinHash(minhash)
+
+            lsh.insert(dom, minhash_lean)
 
         print('LSH Trained!')
         return lsh
@@ -124,29 +125,38 @@ class TingMo:
 
         matches = {}
 
-        for domain in domain_list:
+        for item in domain_list:
 
-            print(domain)
+            print(item)
 
-            tld_info = get_tld(domain, as_object=True, fix_protocol=True)
+            tld_info = get_tld(item, as_object=True, fix_protocol=True)
             just_dom = tld_info.domain
 
             bigrams = set([just_dom[i:i+2] for i in range(len(just_dom) - 1)])
 
-            m = MinHash()
+            minhash_obj = MinHash()
             for b in bigrams:
-                m.update(b.encode('utf-8'))
+                minhash_obj.update(b.encode('utf-8'))
 
-            match = self.lsh.query(m)
+            match = self.lsh.query(minhash_obj)
+            print(match)
+
 
             if exclude:
+                final = []
                 for item in match:
-                    match = [i for i in item if get_tld(i) not in self.brand_tlds]
+                    if get_tld('http://'+item) not in self.brand_tlds:
+                        final.append(item)
+                match = final
+
 
             # this part will remove matches with brand tlds later
 
             matches[just_dom] = match
 
         return matches
+
+
+
 
 

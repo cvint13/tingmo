@@ -44,3 +44,5 @@ python app.py
 ### Future Directions
 
 This app will be hosted on Heroku shortly, hence the Procfile.
+
+File upload/download option.

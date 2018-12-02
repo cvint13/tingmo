@@ -2,16 +2,14 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-import pickle
+from tingmo import TingMo
 
 # number of seconds between re-calculating the data
 UPDATE_INTERVAL = 86400
 
 def get_new_data():
     global tm
-    with open('lsh.pickle','rb') as f:
-        tm_pickle = pickle.load(f)
-        tm = pickle.loads(tm_pickle)
+    tm = TingMo()
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -29,7 +27,11 @@ app.layout = html.Div([
         html.Div(children=[
 
                 html.H2('What is TingMo?'),
-                html.P('TingMo is is powerful tool designed to quickly identify lookalike domains.')
+                html.P('TingMo is is powerful tool designed to quickly identify lookalike domains.'),
+                html.Div(children=[html.Div(children=[html.H5('Number of Chunks')], className='four columns'),
+                html.Div(children=[html.H5('Chunk Size')], className='four columns')],className='row'),
+                html.Div(children=[html.Div(children=[dcc.Input(value='7',id='chunk_size')],className='four columns'),
+                html.Div(children=[dcc.Input(value='5',id='n_chunks')],className='four columns')],className='row'),
 
         ], className='six columns'),
         html.Div(children=[
@@ -55,6 +57,7 @@ app.layout = html.Div([
 )
 def get_matches(n_clicks,values,domain_list):
     domain_list = [d.strip().lower() for d in domain_list.split(',')]
+    print(domain_list)
     exclude = 'BRD' in values
     results = tm.query_LSH(domain_list,exclude)
     html_output = []
