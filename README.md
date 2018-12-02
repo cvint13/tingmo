@@ -41,6 +41,8 @@ python app.py
 
 ``` 
 
+![screenshot](screenshot.png =300x)
+
 ### Future Directions
 
 This app will be hosted on Heroku shortly, hence the Procfile.
