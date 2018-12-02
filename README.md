@@ -41,7 +41,7 @@ python app.py
 
 ``` 
 
-![screenshot](screenshot.png =300x)
+![screenshot](screenshot.png)
 
 ### Future Directions
 
